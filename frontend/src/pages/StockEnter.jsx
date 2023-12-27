@@ -1,20 +1,33 @@
 import React, { useState } from 'react'
 import SideBar from './SideBar'
-import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material'
+import { Autocomplete, Button, Grid,TextField, Typography } from '@mui/material'
 
 const StockEnter = () => {
+
+  const accessoryDropDown = [
+    { label: 'The Godfather', id: 1 },
+    { label: 'Pulp Fiction', id: 2 },
+  ];
+
+  const example = [
+    'Example1',
+    'Example2',
+    'Example3'
+  ]
+  
 
   const [ accessory , setAccessory] = useState([{accessoryType: '',accessoryModel: '', accessoryAmount: '' }])
   const [ phones , setPhones ] = useState([{phoneModel: '', phoneAmount: ''}])
   const [ tabs , setTabs ] = useState([{tabModel: '', tabAmount: ''}])
   const [ musical , setMusical ] = useState([{musicalType: '', musicalModel: '', musicalAmount: ''}])
 
-  const [ formFields , setFormFields] = useState({
+  const [formData, setFormData] = useState({
     accessoriesField: [{accessoryType: '',accessoryModel: '', accessoryAmount: ''}],
     phonesField: [{phoneModel: '', phoneAmount: ''}],
     tabsField: [{tabModel: '', tabAmount: ''}],
-    musicalItemsFiled: [{musicalType: '', musicalModel: '', musicalAmount: ''}]
-  })
+    musicalItemsField: [{musicalType: '', musicalModel: '', musicalAmount: ''}]
+  });
+
 
   // Add Fields section
   const addAccessoryField = () => {
@@ -50,22 +63,66 @@ const StockEnter = () => {
     setMusical(musical.filter((_, index)=> index !== indexToRemove))
   }
 
-  const handleClick = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setFormFields({ ...formFields, [name]: value });
-  }
+  //HandleChanges
+  const handleAccessoryChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedAccessories = [...accessory];
+    updatedAccessories[index][name] = value;
+    setAccessory(updatedAccessories);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formFields)
-  }
+    const updatedFormData = {
+      ...formData,
+      accessoriesField: updatedAccessories
+    };
+    setFormData(updatedFormData);
+  };
 
-  // const handleChangeAccessory = (index, key, value) => {
-  //   const updatedAccessory = [...accessory];
-  //   updatedAccessory[index][key] = value;
-  //   setAccessory(updatedAccessory);
-  // };
+  const handlePhoneChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedPhones = [...phones];
+    updatedPhones[index][name] = value;
+    setPhones(updatedPhones);
+
+    const updatedFormData = {
+      ...formData,
+      phonesField: updatedPhones
+    };
+    setFormData(updatedFormData);
+  };
+
+  const handleTabChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedTabs = [...tabs];
+    updatedTabs[index][name] = value;
+    setTabs(updatedTabs);
+
+    const updatedFormData = {
+      ...formData,
+      tabsField: updatedTabs
+    };
+    setFormData(updatedFormData);
+  };
+
+  const handleMusicalItemChange = (index, event) => {
+    const { name, value } = event.target;
+    const updatedMusicalItems = [...musical];
+    updatedMusicalItems[index][name] = value;
+    setMusical(updatedMusicalItems);
+
+    const updatedFormData = {
+      ...formData,
+      musicalItemsField: updatedMusicalItems
+    };
+    setFormData(updatedFormData);
+  };
+
+
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+  };
+
 
   return (
     <Grid container>
@@ -86,24 +143,13 @@ const StockEnter = () => {
             {accessory.map((item,index) => (
                       <Grid container gap={2} margin={2} key={index}>
                       <Grid item xs={2}>
-                        <TextField select fullWidth name='accessoryType' value={item.accessoryType} onChange={(event) => {handleClick(event, index)}} label="Accessory Type">
-                        <MenuItem> Charger </MenuItem>
-                        <MenuItem> Battery </MenuItem>
-                        <MenuItem> Handsfree </MenuItem>
-                        <MenuItem> Data Cable </MenuItem>
-                        <MenuItem> Bluetooth Handsfree </MenuItem>
-                        <MenuItem> EarBuds </MenuItem>
-                        <MenuItem> Power Bank </MenuItem>
-                        <MenuItem> Memmory Card </MenuItem>
-                        <MenuItem> Pen Drive </MenuItem>
-                        <MenuItem> Charging Dock </MenuItem>
-                        </TextField>
+                        <Autocomplete fullWidth disablePortal id="combo-box-demo" options={accessoryDropDown} renderInput={(params) => <TextField name='accessoryType' value={item.accessoryType} onChange={(e) => handleAccessoryChange(index, e)} {...params} label="Accessory Type" />}  />
                       </Grid>
                       <Grid item xs={2}>
-                          <TextField fullWidth name='accessoryModel' value={item.accessoryModel} onChange={(event) => {handleClick(event, index)}} label='Model' />
+                          <TextField fullWidth name='accessoryModel' value={item.accessoryModel} onChange={(e) => handleAccessoryChange(index, e)} label='Model' />
                       </Grid>
                       <Grid item xs={2}>
-                        <TextField fullWidth name='accessoryAmount' value={item.accessoryAmount} onChange={(event) => {handleClick(event, index)}} label='Amount' />
+                        <TextField fullWidth name='accessoryAmount' value={item.accessoryAmount} onChange={(e) => handleAccessoryChange(index, e)} label='Amount' />
                       </Grid>
 
                       <Grid item xs={2}>
@@ -119,14 +165,10 @@ const StockEnter = () => {
           {phones.map((phone,index) => (
                       <Grid container gap={2} margin={2} key={index}>
                       <Grid item xs={2}>
-                      <TextField select fullWidth name='phoneModel' value='' label="Phone Model">
-                        <MenuItem> Example1 </MenuItem>
-                        <MenuItem> Example2 </MenuItem>
-                        <MenuItem> Example3 </MenuItem>
-                        </TextField>
+                        <Autocomplete fullWidth disablePortal id="combo-box-demo" options={example} renderInput={(params) => <TextField onChange={(e) => handlePhoneChange(index, e)} name='phoneModel' value={phone.phoneModel} {...params} label="Phone Model" />}  />
                       </Grid>
                       <Grid item xs={2}>
-                        <TextField multiline fullWidth name='phoneAmount' value='' label='Amount' />
+                        <TextField multiline fullWidth name='phoneAmount' value={phone.phoneAmount} onChange={(e) => handlePhoneChange(index, e)} label='Amount' />
                       </Grid>
 
                       <Grid item xs={2}>
@@ -142,14 +184,10 @@ const StockEnter = () => {
           {tabs.map((tab,index) => (
                       <Grid container gap={2} margin={2} key={index}>
                       <Grid item xs={2}>
-                      <TextField select fullWidth name='tabModel' value='' label="Tab Model">
-                        <MenuItem> Example1 </MenuItem>
-                        <MenuItem> Example2 </MenuItem>
-                        <MenuItem> Example3 </MenuItem>
-                        </TextField>
+                        <Autocomplete name= 'tabModel' fullWidth disablePortal id="combo-box-demo" options={example} renderInput={(params) => <TextField name= 'tabModel'  value={tab.tabModel} onChange={(e) => handleTabChange(index, e)} {...params} label="Tab Model" />}  />
                       </Grid>
                       <Grid item xs={2}>
-                        <TextField multiline fullWidth name='tabAmount' value='' label='Amount' />
+                        <TextField multiline fullWidth name='tabAmount' onChange={(e) => handleTabChange(index, e)} value={tab.tabAmount} label='Amount' />
                       </Grid>
 
                       <Grid item xs={2}>
@@ -165,17 +203,13 @@ const StockEnter = () => {
           {musical.map((musicalItem,index) => (
                       <Grid container gap={2} margin={2} key={index}>
                       <Grid item xs={2}>
-                        <TextField select fullWidth name='musicalType' value='' label="Musical Item">
-                          <MenuItem> Example1 </MenuItem>
-                          <MenuItem> Example2 </MenuItem>
-                          <MenuItem> Example3 </MenuItem>
-                        </TextField>
+                        <Autocomplete fullWidth disablePortal id="combo-box-demo" options={example} renderInput={(params) => <TextField name='musicalType' value={musicalItem.musicalType} onChange={(e) => handleMusicalItemChange(index, e)} {...params} label="Musical Item Type" />}  />
                       </Grid>
                       <Grid item xs={2}>
-                          <TextField fullWidth name='musicalModel' value='' label='Model' />
+                          <TextField fullWidth name='musicalModel' onChange={(e) => handleMusicalItemChange(index, e)} value={musicalItem.musicalModel} label='Model' />
                       </Grid>
                       <Grid item xs={2}>
-                        <TextField fullWidth name='musicalAmount' value='' label='Amount' />
+                        <TextField fullWidth name='musicalAmount' onChange={(e) => handleMusicalItemChange(index, e)} value={musicalItem.musicalAmount} label='Amount' />
                       </Grid>
 
                       <Grid item xs={2}>

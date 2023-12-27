@@ -6,6 +6,11 @@ import Button from '@mui/material/Button';
 
 function DynamicFields() {
   const [fields, setFields] = useState([{ phoneModel: '', amount: '' }]);
+  const [accessoryData, setAccessoryData] = useState({
+    accessoryType: '',
+    accessoryModel: '',
+    accessoryAmount: ''
+  });
 
   const handleAddField = () => {
     setFields([...fields, { phoneModel: '', amount: '' }]);
@@ -19,6 +24,18 @@ function DynamicFields() {
     const updatedFields = [...fields];
     updatedFields[index][key] = value;
     setFields(updatedFields);
+  };
+
+  const handleAccessoryChange = (key, value) => {
+    setAccessoryData({
+      ...accessoryData,
+      [key]: value
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log('Phone Data:', fields);
+    console.log('Accessory Data:', accessoryData);
   };
 
   return (
@@ -55,6 +72,42 @@ function DynamicFields() {
         </Grid>
       ))}
       <Button variant="contained" color="primary" onClick={handleAddField}>Add</Button>
+
+      {/* Accessory Fields */}
+      <Grid container gap={2} margin={2}>
+        <Grid item xs={2}>
+          <TextField 
+            select 
+            fullWidth 
+            name='accessoryType' 
+            value={accessoryData.accessoryType}
+            label="Accessory Type"
+            onChange={(e) => handleAccessoryChange('accessoryType', e.target.value)}
+          >
+            {/* ... MenuItems for accessory types ... */}
+          </TextField>
+        </Grid>
+        <Grid item xs={2}>
+          <TextField 
+            fullWidth 
+            name='accessoryModel' 
+            value={accessoryData.accessoryModel}
+            label='Model'
+            onChange={(e) => handleAccessoryChange('accessoryModel', e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <TextField 
+            fullWidth 
+            name='accessoryAmount' 
+            value={accessoryData.accessoryAmount}
+            label='Amount'
+            onChange={(e) => handleAccessoryChange('accessoryAmount', e.target.value)}
+          />
+        </Grid>
+      </Grid>
+
+      <Button variant="contained" color="primary" onClick={handleSubmit}>Submit</Button>
     </div>
   );
 }
@@ -62,25 +115,89 @@ function DynamicFields() {
 export default DynamicFields;
 
 
-<Grid container gap={2} margin={2}>
-<Grid item xs={2}>
-  <TextField select fullWidth name='accessoryType' value='' label="Accessory Type">
-  <MenuItem> Charger </MenuItem>
-  <MenuItem> Battery </MenuItem>
-  <MenuItem> Handsfree </MenuItem>
-  <MenuItem> Data Cable </MenuItem>
-  <MenuItem> Bluetooth Handsfree </MenuItem>
-  <MenuItem> EarBuds </MenuItem>
-  <MenuItem> Power Bank </MenuItem>
-  <MenuItem> Memmory Card </MenuItem>
-  <MenuItem> Pen Drive </MenuItem>
-  <MenuItem> Charging Dock </MenuItem>
-  </TextField>
-</Grid>
-<Grid item xs={2}>
-    <TextField fullWidth name='accessoryModel' value='' label='Model' />
-</Grid>
-<Grid item xs={2}>
-  <TextField fullWidth name='accessoryAmount' value='' label='Amount' />
-</Grid>
-</Grid>
+{accessory.map((item, index) => (
+  <Grid container gap={2} margin={2} key={index}>
+    <Grid item xs={2}>
+      <TextField
+        select
+        fullWidth
+        name="accessoryType"
+        value={
+          formFields.accessoriesField.find(
+            (accessory, i) => i === index
+          ).accessoryType
+        }
+        onChange={(event) => {
+          onTextFieldChange(event, "accessoriesField", index);
+        }}
+        label="Accessory Type"
+      >
+        <MenuItem> Charger </MenuItem>
+        <MenuItem> Battery </MenuItem>
+        <MenuItem> Handsfree </MenuItem>
+        <MenuItem> Data Cable </MenuItem>
+        <MenuItem> Bluetooth Handsfree </MenuItem>
+        <MenuItem> EarBuds </MenuItem>
+        <MenuItem> Power Bank </MenuItem>
+        <MenuItem> Memmory Card </MenuItem>
+        <MenuItem> Pen Drive </MenuItem>
+        <MenuItem> Charging Dock </MenuItem>
+      </TextField>
+    </Grid>
+    <Grid item xs={2}>
+      <TextField
+        fullWidth
+        name="accessoryModel"
+        value={
+          formFields.accessoriesField.find(
+            (accessory, i) => i === index
+          ).accessoryModel
+        }
+        onChange={(event) => {
+          onTextFieldChange(event, "accessoriesField", index);
+        }}
+        label="Model"
+      />
+    </Grid>
+    <Grid item xs={2}>
+      <TextField
+        fullWidth
+        name="accessoryAmount"
+        value={
+          formFields.accessoriesField.find(
+            (accessory, i) => i === index
+          ).accessoryAmount
+        }
+        onChange={(event) => {
+          onTextFieldChange(event, "accessoriesField", index);
+        }}
+        label="Amount"
+      />
+    </Grid>
+
+    <Grid item xs={2}>
+      <Button
+        style={{ fontSize: "20px", padding: 0 }}
+        variant="contained"
+        color="error"
+        onClick={() => removeAccessoryField(index)}
+      >
+        {" "}
+        -{" "}
+      </Button>
+    </Grid>
+  </Grid>
+))
+
+const accessoryDropDown = [
+  {id:1, name: 'Charger' },
+  {id:2, name: 'Battery' },
+  {id:3, name: 'Handsfree' },
+  {id:4, name: 'Data Cable' },
+  {id:5, name: 'Bluetooth Handsfree' },
+  {id:6, name: 'EarBuds' },
+  {id:7, name: 'Power Bank' },
+  {id:8, name: 'Memmory Card' },
+  {id:9, name: 'Pen Drive' },
+  {id:10,name: 'Charging Dock' },
+]
