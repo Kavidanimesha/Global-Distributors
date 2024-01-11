@@ -4,6 +4,9 @@ import StockEnter from '../src/pages/StockEnter'
 import StockRelease from '../src/pages/StockRelease'
 import StockReturn from '../src/pages/StockReturn'
 import Inventory from '../src/pages/Inventory'
+import AddItems from '../src/pages/AddItems'
+import AddStaff from '../src/pages/AddStaff'
+import AddShop from '../src/pages/AddShop'
 
 function App() {
   return (
@@ -14,6 +17,9 @@ function App() {
       <Route path='/stockrelease' element={<StockRelease />} />
       <Route path='/stockreturn' element={<StockReturn />} />
       <Route path='/inventory' element={<Inventory />} />
+      <Route path='/additems' element={<AddItems />} />
+      <Route path='/addstaff' element={<AddStaff />} />
+      <Route path='/addshop' element={<AddShop />} />
     </Routes>
    </BrowserRouter>
   );
