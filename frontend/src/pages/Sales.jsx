@@ -15,6 +15,12 @@ const Sales = () => {
     {name:'example2' , id: 2},
     {name:'example3' , id: 3},
   ]
+
+  const SalesTypes = [
+    {name:'Cash' , id: 1},
+    {name:'Credit' , id: 2},
+    {name:'Date Check' , id: 3},
+  ]
   
 
   const [ accessory , setAccessory] = useState([{accessoryType: '',accessoryModel: '', accessoryAmount: '', accessoryPrice: '', accessoryTotal: '' }])
@@ -27,7 +33,7 @@ const Sales = () => {
     phonesField: [{phoneType: '', phoneModel: '', phoneAmount: '', phonePrice: '', phoneTotal: ''}],
     tabsField: [{tabType: '', tabModel: '', tabAmount: '', tabPrice: '', tabTotal: ''}],
     musicalItemsField: [{musicalType: '', musicalModel: '', musicalAmount: '', musicalPrice: '', musicalTotal: ''}],
-    staticFields: {refName: '', totalSales: '', shopName: ''}
+    staticFields: {refName: '', totalSales: '', shopName: '', salesType: ''}
   });
 
 
@@ -150,14 +156,21 @@ const Sales = () => {
         <Grid>
           <form>
           {/* Accessories Section */}
-          <Grid container gap={2} margin={2}>
-            <Grid item xs={3}>
+          <Grid container gap={1} margin={2}>
+            <Grid item xs={2}>
               <TextField fullWidth name='refName' value={formData.staticFields.refName} onChange={handleStaticChange} label='Ref Name'/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <TextField fullWidth name='shopName' value={formData.staticFields.shopName} onChange={handleStaticChange} label='shop Name'/> 
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
+              <TextField select fullWidth name='salesType' onChange={handleStaticChange} label='Sales Type'>
+                {SalesTypes.map((type) => (
+                  <MenuItem key={type.id} value={type.name}> {type.name} </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={2}>
               <TextField fullWidth name='totalSales' value={formData.staticFields.totalSales} onChange={handleStaticChange} label='Total Sales'/>
             </Grid>
             
