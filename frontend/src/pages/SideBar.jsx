@@ -55,7 +55,7 @@ const DASHBOARD_LIST = [
     id: 5,
     primaryName: "Inventory",
     primaryIcon: <FaUserDoctor style={{color:"white"}} />,
-    path: "/inventory"
+    path: "/inventories"
   },
   {
     id: 6,
