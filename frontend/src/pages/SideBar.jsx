@@ -74,6 +74,12 @@ const DASHBOARD_LIST = [
     primaryName: "Add Shop",
     primaryIcon: <FaUserDoctor style={{color:"white"}} />,
     path: "/addshop"
+  },
+  {
+    id: 9,
+    primaryName: "Add Types",
+    primaryIcon: <FaUserDoctor style={{color:"white"}} />,
+    path: "/addtypes"
   }
 ];
 

@@ -7,6 +7,7 @@ import Inventory from '../src/pages/Inventory'
 import AddItems from '../src/pages/AddItems'
 import AddStaff from '../src/pages/AddStaff'
 import AddShop from '../src/pages/AddShop'
+import AddTypes from './pages/AddTypes'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path='/additems' element={<AddItems />} />
       <Route path='/addstaff' element={<AddStaff />} />
       <Route path='/addshop' element={<AddShop />} />
+      <Route path='/addtypes' element={<AddTypes />} />
     </Routes>
    </BrowserRouter>
   );

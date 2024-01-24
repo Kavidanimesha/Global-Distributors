@@ -119,7 +119,40 @@ const AddItems = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    const request = []
+    formData.accessoriesField.map((fields) => {
+      request.push({
+        ...fields,
+        category: "Accessories"
+      })
+    })
+
+    formData.musicalItemsField.map((fields) => {
+            request.push({
+        ...fields,
+        category: "Musical Item"
+      })
+    })
+
+
+    formData.phonesField.map((fields) => {
+            request.push({
+        ...fields,
+        category: "Phone"
+      })
+    })
+
+
+    formData.tabsField.map((fields) => {
+            request.push({
+        ...fields,
+        category: "Tab"
+      })
+    })
+
+
+
+    console.log(JSON.stringify(request));
   };
 
 
