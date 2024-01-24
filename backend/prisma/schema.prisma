@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id      Int    @id @default(autoincrement())
-  name    String
-  email   String @unique
-  contact String
-  role    String
+  id            Int     @id @default(autoincrement())
+  name          String
+  email         String  @unique
+  contact       String
+  role          String
   created_staff Staff[]
+  created_shop  Shop[]
 }
 
 model Staff {
@@ -27,6 +28,37 @@ model Staff {
   contact_primary   String
   contact_secondary String
   address           String
-  user_id Int
-  user User @relation(fields: [user_id], references: [id])
+  user_id           Int
+  user              User   @relation(fields: [user_id], references: [id])
+}
+
+model Shop {
+  id                Int    @id @default(autoincrement())
+  shop_name         String
+  owner_name        String
+  address           String
+  contact_primary   Int
+  contact_secondary Int
+  user_id           Int
+  user              User   @relation(fields: [user_id], references: [id])
+}
+
+model Item {
+  id           Int    @id @default(autoincrement())
+  name         String @unique
+  model        String
+  priceInCents Int
+  type_id Int
+  type Type @relation(fields: [type_id], references: [id])
+  
+}
+
+model Type {
+  id           Int    @id @default(autoincrement())
+  type String 
+  description String 
+  category String 
+  items Item[]
+
+  @@unique([type, category])
 }
