@@ -161,7 +161,7 @@ const Sales = () => {
               <TextField fullWidth name='refName' value={formData.staticFields.refName} onChange={handleStaticChange} label='Ref Name'/>
             </Grid>
             <Grid item xs={2}>
-              <TextField fullWidth name='shopName' value={formData.staticFields.shopName} onChange={handleStaticChange} label='shop Name'/> 
+              <TextField fullWidth name='shopName' value={formData.staticFields.shopName} onChange={handleStaticChange} label='Shop Name'/> 
             </Grid>
             <Grid item xs={2}>
               <TextField select fullWidth name='salesType' onChange={handleStaticChange} label='Sales Type'>
