@@ -7,6 +7,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import axios from "../utils/axios";
+
 
 const rows = [
   { id: 1, type: "Mouse", description: "N/A", category: "Phone" },
@@ -28,9 +30,14 @@ const AddTypes = () => {
         setFormData({ ...formData, [name]: value });
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData)
+
+        try {
+          const response = await axios.post("/type", formData)
+        } catch (error) {
+          
+        }
     }
 
   return (
