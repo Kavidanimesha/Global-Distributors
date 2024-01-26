@@ -30,6 +30,8 @@ export const getShopById = async (req,res) => {
 export const createShop = async (req,res) => {
     const shop = req.body
 
+    console.log(shop);
+
     try {
         const createdShop = await prisma.shop.create({
             data: {
@@ -49,6 +51,7 @@ export const createShop = async (req,res) => {
         return res.send(createdShop)
 
     } catch (e) {
+        console.log(e);
         return res.status(500).send({messsage:"Something Went Wrong", })
     }
 }
