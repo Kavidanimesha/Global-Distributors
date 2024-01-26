@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import SideBar from './SideBar'
 import { Button, Grid,TextField,Typography } from '@mui/material'
+import axios from "../utils/axios";
+import { toast } from "react-toastify";
 
 const AddShop = () => {
 
   const [ formData , setFormData ] = useState({
-    shopName: '',
-    ownerName: '',
+    shop_name: '',
+    owner_name: '',
     address: '',
-    phone1: '',
-    phone2: ''
+    contact_primary: '',
+    contact_secondary: ''
   })
 
   const handleChange = (e) => {
@@ -18,9 +20,16 @@ const AddShop = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
+
+    try {
+      const response = await axios.post("/shop", formData)
+
+      
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -37,10 +46,10 @@ const AddShop = () => {
             <form style={{marginLeft:'20px'}}>
               <Grid container spacing={2} marginBottom={2}>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='shopName' value={formData.shopName} onChange={handleChange} label='Shop Name' />
+                  <TextField fullWidth name='shop_name' value={formData.shop_name} onChange={handleChange} label='Shop Name' />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='ownerName' value={formData.ownerName} onChange={handleChange} label='Owner Name' />
+                  <TextField fullWidth name='owner_name' value={formData.owner_name} onChange={handleChange} label='Owner Name' />
                 </Grid>
               </Grid>
 
@@ -50,10 +59,10 @@ const AddShop = () => {
 
               <Grid container spacing={2} marginBottom={3}>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='phone1' value={formData.phone1} onChange={handleChange} label='Phone 1' />
+                  <TextField fullWidth name='contact_primary' value={formData.contact_primary} onChange={handleChange} label='Phone 1' />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='phone2' value={formData.phone2} onChange={handleChange} label='Phone 2' />
+                  <TextField fullWidth name='contact_secondary' value={formData.contact_secondary} onChange={handleChange} label='Phone 2' />
                 </Grid>
               </Grid>
 
