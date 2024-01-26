@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
 import SideBar from './SideBar'
 import { Button, Grid,TextField,Typography } from '@mui/material'
+import axios from '../utils/axios'
+import { toast } from 'react-toastify'
 
 const AddStaff = () => {
 
   const [ formData , setFormData ] = useState({
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    phone1: '',
-    phone2: '',
+    contact_primary: '',
+    contact_secondary: '',
     address: ''
   })
 
@@ -19,9 +21,41 @@ const AddStaff = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData)
+    
+    try {
+
+      const response = await axios.post("/staff", formData)
+      console.log(response);
+
+      if (response.status === 200) {
+        toast.success("Staff Member Added", {
+          position: "top-right",
+          autoClose: 5000
+        })
+
+        setFormData({
+          first_name: '',
+          last_name: '',
+          email: '',
+          contact_primary: '',
+          contact_secondary: '',
+          address: ''
+        })
+      } else {
+        toast.error("Something went Wrong", {
+          position: "top-right",
+          autoClose: 4000
+        })
+      }
+
+    } catch (error) {
+      toast.error("Can not Create Staff", {
+        position: "top-right",
+        autoClose: 4000
+      })
+    }
   }
 
   return (
@@ -38,10 +72,10 @@ const AddStaff = () => {
             <form style={{marginLeft:'20px'}}>
               <Grid container spacing={2} marginBottom={2}>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='firstName' value={formData.firstName} onChange={handleChange} label='First Name' />
+                  <TextField fullWidth name='first_name' value={formData.first_name} onChange={handleChange} label='First Name' />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='lastName' value={formData.lastName} onChange={handleChange} label='Last Name' />
+                  <TextField fullWidth name='last_name' value={formData.last_name} onChange={handleChange} label='Last Name' />
                 </Grid>
               </Grid>
 
@@ -51,10 +85,10 @@ const AddStaff = () => {
 
               <Grid container spacing={2} marginBottom={2}>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='phone1' value={formData.phone1} onChange={handleChange} label='Phone 1' />
+                  <TextField fullWidth name='contact_primary' value={formData.contact_primary} onChange={handleChange} label='Phone 1' />
                 </Grid>
                 <Grid item xs={6}>
-                  <TextField fullWidth name='phone2' value={formData.phone2} onChange={handleChange} label='Phone 2' />
+                  <TextField fullWidth name='contact_secondary' value={formData.contact_secondary} onChange={handleChange} label='Phone 2' />
                 </Grid>
               </Grid>
 
