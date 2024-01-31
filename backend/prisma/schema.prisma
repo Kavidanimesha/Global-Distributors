@@ -11,65 +11,122 @@ datasource db {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  name          String
-  email         String  @unique
-  contact       String
-  role          String
-  created_staff Staff[]
-  created_shop  Shop[]
-  created_type Type[]
+  id                     Int             @id @default(autoincrement())
+  name                   String
+  email                  String          @unique
+  contact                String
+  role                   String
+  created_staff          Staff[]
+  created_shop           Shop[]
+  careated_categories    Category[]
+  created_Sub_Categories Sub_Category[]
+  created_Products       Product[]
+  created_inventory      Inventory[]
+  created_stock_enter    stock_enter[]
+  created_stock_release  stock_release[]
+  created_stock_return   stock_return[]
 }
 
 model Staff {
-  id                Int    @id @default(autoincrement())
+  id                Int             @id @default(autoincrement())
   first_name        String
   last_name         String
-  email             String @unique
+  email             String          @unique
   contact_primary   String
   contact_secondary String
   address           String
+  role              String
   user_id           Int
-  user              User   @relation(fields: [user_id], references: [id])
+  user              User            @relation(fields: [user_id], references: [id])
+  stockReleases     stock_release[]
+  stockReturns      stock_return[]
 }
 
 model Shop {
   id                Int    @id @default(autoincrement())
-  shop_name         String 
+  shop_name         String
   owner_name        String
   address           String
   contact_primary   Int
   contact_secondary Int
   user_id           Int
   user              User   @relation(fields: [user_id], references: [id])
-  sales Sale[]
 }
 
-model Sale {
-  id                Int    @id @default(autoincrement())
-  
-  shop_id Int
-  shop Shop @relation(fields: [shop_id], references: [id])
+model Category {
+  id             Int            @id @default(autoincrement())
+  category_name  String
+  user_id        Int
+  user           User           @relation(fields: [user_id], references: [id])
+  sub_categories Sub_Category[]
 }
 
-model Item {
-  id           Int    @id @default(autoincrement())
-  name         String @unique
-  model        String
-  priceInCents Int
-  type_id Int
-  type Type @relation(fields: [type_id], references: [id])
-  
+model Sub_Category {
+  id          Int       @id @default(autoincrement())
+  sub_name    String
+  user_id     Int
+  user        User      @relation(fields: [user_id], references: [id])
+  category_id Int
+  category    Category  @relation(fields: [category_id], references: [id])
+  products    Product[]
 }
 
-model Type {
-  id           Int    @id @default(autoincrement())
-  type String 
-  description String 
-  category String 
-  items Item[]
-  user_id           Int
-  user              User   @relation(fields: [user_id], references: [id])
+model Product {
+  id              Int          @id @default(autoincrement())
+  product_name    String
+  priceInCents    Int
+  user_id         Int
+  user            User         @relation(fields: [user_id], references: [id])
+  sub_category_id Int
+  sub_category    Sub_Category @relation(fields: [sub_category_id], references: [id])
+  inventory       Inventory?
+}
 
-  @@unique([type, category])
+model Inventory {
+  id             Int             @id @default(autoincrement())
+  quantity       Int
+  units_sold     Int
+  user_id        Int
+  user           User            @relation(fields: [user_id], references: [id])
+  product_id     Int             @unique
+  product        Product         @relation(fields: [product_id], references: [id])
+  stock_enter_id Int
+  stock_enter    stock_enter     @relation(fields: [stock_enter_id], references: [id])
+  stockReleases  stock_release[]
+  stockReturns   stock_return[]
+}
+
+// Why do we need to "@unique" one and add "?" to other one ??
+
+model stock_enter {
+  id          Int         @id @default(autoincrement())
+  date        String
+  amount      Int
+  user_id     Int
+  user        User        @relation(fields: [user_id], references: [id])
+  inventories Inventory[]
+}
+
+model stock_release {
+  id             Int       @id @default(autoincrement())
+  release_id     String
+  release_amount Int
+  user_id        Int
+  user           User      @relation(fields: [user_id], references: [id])
+  staff_id       Int
+  staff          Staff     @relation(fields: [staff_id], references: [id])
+  inventory_id   Int
+  inventory      Inventory @relation(fields: [inventory_id], references: [id])
+}
+
+model stock_return {
+  id            Int       @id @default(autoincrement())
+  return_id     String
+  return_amount Int
+  user_id       Int
+  user          User      @relation(fields: [user_id], references: [id])
+  staff_id      Int
+  staff         Staff     @relation(fields: [staff_id], references: [id])
+  inventory_id  Int
+  inventory     Inventory @relation(fields: [inventory_id], references: [id])
 }

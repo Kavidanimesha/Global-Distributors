@@ -24,13 +24,36 @@ const AddShop = () => {
     e.preventDefault()
 
     try {
-      const response = await axios.post("/shop", formData)
+      const response = await axios.post("/shop", formData);
 
-      
-    } catch (error) {
-      console.log(error);
+    if (response.status === 200) {
+      toast.success("Shop Created Successfully", {
+          position: "top-right",
+          autoClose: 5000,
+        });
+
+        // form clear
+        setFormData({
+          shop_name: '',
+          owner_name: '',
+          address: '',
+          contact_primary: '',
+          contact_secondary: ''
+        })
+
+    } else {
+      toast.error("Something Went Wrong!", {
+          position: "top-right",
+          autoClose: 5000,
+        });
     }
-  }
+    } catch (error) {
+      toast.error("Can not Create Shop", {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    }
+  };
 
   return (
     <Grid container>

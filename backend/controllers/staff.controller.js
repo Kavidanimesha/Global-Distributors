@@ -38,6 +38,7 @@ export const createStaff = async (req,res) => {
                 email: staff.email,
                 first_name: staff.first_name,
                 last_name: staff.last_name,
+                role: staff.role,
                 user: {
                     connect: {
                         id:1

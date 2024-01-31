@@ -1,8 +1,75 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideBar from './SideBar'
-import { Button, Grid,MenuItem,TextField, Typography } from '@mui/material'
+import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material'
+import axios from '../utils/axios'
+import { toast } from "react-toastify";
 
 const Sales = () => {
+
+  const [ staffIsLoading , setStaffIsLoading ] = useState(true)
+  const [ staff , setStaff ] = useState([])
+  const [ shopIsLoading , setShopIsLoading ] = useState(true)
+  const [ shop , setShop ] = useState([])
+  const [ typeIsLoading , setTypeIsLoading ] = useState(true)
+  const [type , setType ] = useState([])
+
+  useEffect( ()=>{
+
+    (async () => {
+      setStaffIsLoading(true)
+
+      try {
+        const response = await axios.get("/staff")
+
+        setStaff(response.data)
+        setStaffIsLoading(false)
+        
+      } catch (error) {
+        toast.error("Something Went Wrong", {
+          position: "top-right",
+          autoClose: 5000,
+        })
+      }
+    })()
+  }, [])
+
+  useEffect (()=>{
+    (async()=> {
+      setShopIsLoading(true)
+
+      try {
+        const response = await axios.get("/shop")
+
+        setShop(response.data)
+        setShopIsLoading(false)
+
+      } catch (error) {
+        toast.error("Something Went Wrong", {
+          position: "top-right",
+          autoClose: 5000,
+        })
+      }
+    })()
+  },[])
+
+  useEffect (()=>{
+    (async()=> {
+      setTypeIsLoading(true)
+
+      try {
+        const response = await axios.get("/type")
+
+        setType(response.data)
+        setTypeIsLoading(false)
+
+      } catch (error) {
+        toast.error("Something Went Wrong", {
+          position: "top-right",
+          autoClose: 5000,
+        })
+      }
+    })()
+  }, [])
 
   const accessoryDropDown = [
     {name:'charger' , id: 1},
@@ -158,10 +225,18 @@ const Sales = () => {
           {/* Accessories Section */}
           <Grid container gap={1} margin={2}>
             <Grid item xs={2}>
-              <TextField fullWidth name='refName' value={formData.staticFields.refName} onChange={handleStaticChange} label='Ref Name'/>
+              <TextField fullWidth select name='refName' onChange={handleStaticChange} label='Ref Name'>
+                {staff.map((staff)=>(
+                  <MenuItem key={staff.id} value={staff.id}> {staff.first_name} {staff.last_name} </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={2}>
-              <TextField fullWidth name='shopName' value={formData.staticFields.shopName} onChange={handleStaticChange} label='Shop Name'/> 
+              <TextField fullWidth select name='shop_name' onChange={handleStaticChange} label='Shop Name'>
+                {shop.map((shop)=>(
+                  <MenuItem key={shop.id} value={shop.id}> {shop.shop_name} </MenuItem>
+                ))}
+              </TextField>
             </Grid>
             <Grid item xs={2}>
               <TextField select fullWidth name='salesType' onChange={handleStaticChange} label='Sales Type'>
@@ -180,8 +255,8 @@ const Sales = () => {
                       <Grid container gap={1} margin={2} key={index}>
                       <Grid item xs={2}>
                         <TextField fullWidth select name='accessoryType' label='Accessory Type' onChange={(e) => handleAccessoryChange(index, e)}>
-                            {accessoryDropDown.map((item)=>(
-                                <MenuItem key={item.id} value={item.name}> {item.name} </MenuItem>
+                            {type.filter((item) => item.category === 'Accessory').map((item)=>(
+                                <MenuItem key={item.id} value={item.id}> {item.type} </MenuItem>
                             ))}
                         </TextField>
                       </Grid>
@@ -212,8 +287,8 @@ const Sales = () => {
                       <Grid container gap={1} margin={2} key={index}>
                       <Grid item xs={2}>
                         <TextField fullWidth select name='phoneType' label='Phone Type' onChange={(e) => handlePhoneChange(index, e)}>
-                            {example.map((item)=>(
-                                <MenuItem key={item.id} value={item.name}> {item.name} </MenuItem>
+                            {type.filter((item)=>item.category === "Phone").map((item)=>(
+                                <MenuItem key={item.id} value={item.id}> {item.type} </MenuItem>
                             ))}
                         </TextField>
                       </Grid>
@@ -244,8 +319,8 @@ const Sales = () => {
                       <Grid container gap={1} margin={2} key={index}>
                      <Grid item xs={2}>
                         <TextField fullWidth select name='tabType' label='Tab Type' onChange={(e) => handleTabChange(index, e)}>
-                            {example.map((item)=>(
-                                <MenuItem key={item.id} value={item.name}> {item.name} </MenuItem>
+                            {type.filter((item)=> item.category==="Tab").map((item)=>(
+                                <MenuItem key={item.id} value={item.id}> {item.type} </MenuItem>
                             ))}
                         </TextField>
                       </Grid>
@@ -276,8 +351,8 @@ const Sales = () => {
                       <Grid container gap={1} margin={2} key={index}>
                      <Grid item xs={2}>
                         <TextField fullWidth select name='musicalType' label='Musical Item Type' onChange={(e) => handleMusicalItemChange(index, e)}>
-                            {example.map((item)=>(
-                                <MenuItem key={item.id} value={item.name}> {item.name} </MenuItem>
+                            {type.filter((item)=> item.category==="Musical").map((item)=>(
+                                <MenuItem key={item.id} value={item.id}> {item.type} </MenuItem>
                             ))}
                         </TextField>
                       </Grid>

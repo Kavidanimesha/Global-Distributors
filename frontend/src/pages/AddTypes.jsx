@@ -8,6 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import axios from "../utils/axios";
+import { toast } from "react-toastify";
 
 
 const rows = [
@@ -34,9 +35,32 @@ const AddTypes = () => {
         e.preventDefault()
 
         try {
-          const response = await axios.post("/type", formData)
+          const response = await axios.post("/type", formData);
+    
+        if (response.status === 200) {
+          toast.success("Type Created Successfully", {
+              position: "top-right",
+              autoClose: 5000,
+            });
+    
+            // form clear
+            setFormData({
+              type: '',
+              description: '',
+              category: ''
+            })
+    
+        } else {
+          toast.error("Something Went Wrong!", {
+              position: "top-right",
+              autoClose: 5000,
+            });
+        }
         } catch (error) {
-          
+          toast.error("Can not Create Type", {
+            position: "top-right",
+            autoClose: 5000,
+          });
         }
     }
 

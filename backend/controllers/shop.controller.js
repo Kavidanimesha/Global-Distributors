@@ -30,8 +30,6 @@ export const getShopById = async (req,res) => {
 export const createShop = async (req,res) => {
     const shop = req.body
 
-    console.log(shop);
-
     try {
         const createdShop = await prisma.shop.create({
             data: {
